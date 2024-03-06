@@ -1,50 +1,62 @@
 <?php
-function sacar(array $conta, float $valorASacar): array
-{
 
-    if ($valorASacar > $conta['saldo']) {
-        exibeMensagem("vc n pode sacar");
-    } else {
-        $conta['saldo'] -= $valorASacar;
-    }
-
-    return $conta;
-}
-
-function depositar(array $conta, float $valorADepositar): array
-{
-
-    if ($valorADepositar < 0) {
-        exibeMensagem('vc n pode depositar');
-    } else {
-        $conta['saldo'] += $valorADepositar;
-    }
-    return $conta;
-}
-function exibeMensagem($mensagem)
-{
-    echo $mensagem . PHP_EOL;
-}
+require_once 'funcoes.php';
 
 $contasCorrentes = [
-    '102.431.545-43' => [
-        'titular' => 'vinicius',
-        'saldo' => '1000'
+    '123.456.789-10' => [
+        'titular' => 'Maria',
+        'saldo' => 10000
     ],
-    '303.719.432-93' => [
-        'titular' => 'carlos',
-        'saldo' => '1000'
+    '123.456.689-11' => [
+        'titular' => 'Alberto',
+        'saldo' => 300
     ],
-    '638.193.545-43' =>  [
-        'titular' => 'roberto',
-        'saldo' => '1000'
-    ],
+    '123.256.789-12' => [
+        'titular' => 'Vinicius',
+        'saldo' => 100
+    ]
 ];
 
-$contasCorrentes['303.719.432-93'] = sacar($contasCorrentes['303.719.432-93'], 50000);
-$contasCorrentes['638.193.545-43'] = sacar($contasCorrentes['638.193.545-43'], 500);
-$contasCorrentes['102.431.545-43'] = depositar($contasCorrentes['102.431.545-43'], -5500);
+$contasCorrentes['123.456.789-10'] = sacar(
+    $contasCorrentes['123.456.789-10'],
+    500
+);
 
-foreach ($contasCorrentes as $cpf => $conta) {
-    exibeMensagem($cpf . " " . $conta['titular'] . ' ' . $conta['saldo']);
-}
+$contasCorrentes['123.456.689-11'] = sacar(
+    $contasCorrentes['123.456.689-11'],
+    200
+);
+
+$contasCorrentes['123.256.789-12'] = depositar(
+    $contasCorrentes['123.256.789-12'],
+    900
+);
+
+unset($contasCorrentes['123.456.689-11']);
+
+titularComLetrasMaiusculas($contasCorrentes['123.256.789-12']);
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Contas correntes</h1>
+
+    <dl>
+        <?php foreach($contasCorrentes as $cpf => $conta) { ?>
+        <dt>
+            <h3><?= $conta['titular']; ?> - <?= $cpf; ?></h3>
+        </dt>
+        <dd>
+            Saldo: <?= $conta['saldo']; ?>
+        </dd>
+        <?php } ?>
+    </dl>
+</body>
+</html> 
